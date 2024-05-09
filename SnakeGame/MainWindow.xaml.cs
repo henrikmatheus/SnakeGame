@@ -26,6 +26,7 @@ namespace SnakeGame
         private readonly int rows = 15, cols = 15;
         private readonly Image[,] gridImages;
         private GameState gameState;
+        private bool gameRunning;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,11 +34,28 @@ namespace SnakeGame
             gameState = new GameState(rows, cols);
         }
 
-        private async void Window_Loaded(object sender, RoutedEventArgs e)
+        private async Task RunGame()
         {
             Draw();
+            await ShowCountDown();
+            Overlay.Visibility = Visibility.Hidden;
             await GameLoop();
         }
+
+        private async void Window_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if(Overlay.Visibility == Visibility.Visible)
+            {
+                e.Handled = true;
+            }
+
+            if (!gameRunning)
+            {
+                gameRunning = true;
+                await RunGame();
+                gameRunning = false;
+            }
+        } 
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
@@ -110,6 +128,15 @@ namespace SnakeGame
                     GridValue gridVal = gameState.Grid[r, c];
                     gridImages[r, c].Source = gridValToImage[gridVal];
                 }
+            }
+        }
+
+        private async Task ShowCountDown()
+        {
+            for(int i = 3; i >= 1; i--)
+            {
+                OverlayText.Text = i.ToString();
+                await Task.Delay(500);
             }
         }
     }

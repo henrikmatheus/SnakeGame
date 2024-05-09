@@ -13,10 +13,10 @@
         FontFamily="StaticResource MainFont" 
         WindowStartupLocation="CenterScreen" 
         Icon="Assets/icon.ico"
-        Loaded="Window_Loaded"
         KeyDown="Window_KeyDown"
         MinWidth="200"
         MinHeight="300"
+        PreviewKeyDown="Window_PreviewKeyDown"
         >
     <Viewbox>
         <Grid>
@@ -50,6 +50,23 @@
 
                 </UniformGrid>
 
+            </Border>
+            <Border x:Name="Overlay"
+                    Grid.Row="1"
+                    Background="{StaticResource OverlayColor}"
+                    Width="{Binding Path=ActualWidth, ElementName=GridBorder}"
+                    Height="{Binding Path=ActualHeight, ElementName=GridBorder}"
+                    Margin="{Binding Path=Margin, ElementName=GridBorder}"
+                    RenderOptions.EdgeMode="Aliased">
+                <TextBlock x:Name="OverlayText"
+                           Text="PRESS ANY KEY TO START"
+                           FontSize="26"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap">
+                    
+                </TextBlock>
+                
             </Border>
         </Grid>
     </Viewbox>
